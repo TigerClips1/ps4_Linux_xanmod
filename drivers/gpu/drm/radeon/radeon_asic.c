@@ -2632,6 +2632,12 @@ int radeon_asic_init(struct radeon_device *rdev)
 	case CHIP_KAVERI:
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
+	case CHIP_LIVERPOOL:
+		if(rdev->family == CHIP_LIVERPOOL)
+		{
+			kv_asic.copy.blit = &cik_copy_cpdma;
+			kv_asic.copy.blit_ring_index = R600_RING_TYPE_DMA_INDEX;
+		}
 		rdev->asic = &kv_asic;
 		/* set num crtcs */
 		if (rdev->family == CHIP_KAVERI) {
@@ -2689,8 +2695,14 @@ int radeon_asic_init(struct radeon_device *rdev)
 				RADEON_PG_SUPPORT_RLC_SMU_HS |
 				RADEON_PG_SUPPORT_SAMU;*/
 		}
-		rdev->has_uvd = true;
-		rdev->has_vce = true;
+
+		if(rdev->family == CHIP_LIVERPOOL) {
+			rdev->has_uvd = false;
+			rdev->has_vce = false;
+		} else {
+			rdev->has_uvd = true;
+			rdev->has_vce = true;
+		}
 		break;
 	default:
 		/* FIXME: not supported yet */

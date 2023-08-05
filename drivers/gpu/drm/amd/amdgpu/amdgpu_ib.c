@@ -384,10 +384,13 @@ int amdgpu_ib_ring_tests(struct amdgpu_device *adev)
 	} else if (adev->gmc.xgmi.hive_id) {
 		tmo_gfx = AMDGPU_IB_TEST_GFX_XGMI_TIMEOUT;
 	}
-
+	#ifdef CONFIG_X86_PS4
+		for (i = 0; i < 1 /*adev->num_rings*/; ++i) {
+	#else
 	for (i = 0; i < adev->num_rings; ++i) {
-		struct amdgpu_ring *ring = adev->rings[i];
-		long tmo;
+	#endif
+			struct amdgpu_ring *ring = adev->rings[i];
+			long tmo;
 
 		/* KIQ rings don't have an IB test because we never submit IBs
 		 * to them and they have no interrupt support.

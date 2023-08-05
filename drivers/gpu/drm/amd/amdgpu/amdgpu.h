@@ -269,6 +269,8 @@ extern int amdgpu_num_kcq;
 /* max cursor sizes (in pixels) */
 #define CIK_CURSOR_WIDTH 128
 #define CIK_CURSOR_HEIGHT 128
+#define LVP_CURSOR_WIDTH 64 
+#define LVP_CURSOR_HEIGHT 64
 
 /* smasrt shift bias level limits */
 #define AMDGPU_SMARTSHIFT_MAX_BIAS (100)
