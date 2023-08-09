@@ -2600,57 +2600,57 @@ static void __init free_iommu_resources(void)
 }
 
 #ifndef CONFIG_X86_PS4 //this should detect ps4-ness at runtime
-/* SB IOAPIC is always on this device in AMD systems */
-#define IOAPIC_SB_DEVID		((0x00 << 8) | PCI_DEVFN(0x14, 0))
+	/* SB IOAPIC is always on this device in AMD systems */
+	#define IOAPIC_SB_DEVID		((0x00 << 8) | PCI_DEVFN(0x14, 0))
 
-static bool __init check_ioapic_information(void)
-{
-	const char *fw_bug = FW_BUG;
-	bool ret, has_sb_ioapic;
-	int idx;
+	static bool __init check_ioapic_information(void)
+	{
+		const char *fw_bug = FW_BUG;
+		bool ret, has_sb_ioapic;
+		int idx;
 
-	has_sb_ioapic = false;
-	ret           = false;
+		has_sb_ioapic = false;
+		ret           = false;
 
-	/*
-	 * If we have map overrides on the kernel command line the
-	 * messages in this function might not describe firmware bugs
-	 * anymore - so be careful
-	 */
-	if (cmdline_maps)
-		fw_bug = "";
-
-	for (idx = 0; idx < nr_ioapics; idx++) {
-		int devid, id = mpc_ioapic_id(idx);
-
-		devid = get_ioapic_devid(id);
-		if (devid < 0) {
-			pr_err("%s: IOAPIC[%d] not in IVRS table\n",
-				fw_bug, id);
-			ret = false;
-		} else if (devid == IOAPIC_SB_DEVID) {
-			has_sb_ioapic = true;
-			ret           = true;
-		}
-	}
-
-	if (!has_sb_ioapic) {
 		/*
-		 * We expect the SB IOAPIC to be listed in the IVRS
-		 * table. The system timer is connected to the SB IOAPIC
-		 * and if we don't have it in the list the system will
-		 * panic at boot time.  This situation usually happens
-		 * when the BIOS is buggy and provides us the wrong
-		 * device id for the IOAPIC in the system.
-		 */
-		pr_err("%s: No southbridge IOAPIC found\n", fw_bug);
+		* If we have map overrides on the kernel command line the
+		* messages in this function might not describe firmware bugs
+		* anymore - so be careful
+		*/
+		if (cmdline_maps)
+			fw_bug = "";
+
+		for (idx = 0; idx < nr_ioapics; idx++) {
+			int devid, id = mpc_ioapic_id(idx);
+
+			devid = get_ioapic_devid(id);
+			if (devid < 0) {
+				pr_err("%s: IOAPIC[%d] not in IVRS table\n",
+					fw_bug, id);
+				ret = false;
+			} else if (devid == IOAPIC_SB_DEVID) {
+				has_sb_ioapic = true;
+				ret           = true;
+			}
+		}
+
+		if (!has_sb_ioapic) {
+			/*
+			* We expect the SB IOAPIC to be listed in the IVRS
+			* table. The system timer is connected to the SB IOAPIC
+			* and if we don't have it in the list the system will
+			* panic at boot time.  This situation usually happens
+			* when the BIOS is buggy and provides us the wrong
+			* device id for the IOAPIC in the system.
+			*/
+			pr_err("%s: No southbridge IOAPIC found\n", fw_bug);
+		}
+
+		if (!ret)
+			pr_err("Disabling interrupt remapping\n");
+
+		return ret;
 	}
-
-	if (!ret)
-		pr_err("Disabling interrupt remapping\n");
-
-	return ret;
-}
 #endif
 static void __init free_dma_resources(void)
 {
@@ -2792,8 +2792,8 @@ static int __init early_amd_iommu_init(void)
 		disable_iommus();
 	
 	#ifndef CONFIG_X86_PS4
-	if (amd_iommu_irq_remap)
-		amd_iommu_irq_remap = check_ioapic_information();
+		if (amd_iommu_irq_remap)
+			amd_iommu_irq_remap = check_ioapic_information();
 	#endif
 
 	if (amd_iommu_irq_remap) {

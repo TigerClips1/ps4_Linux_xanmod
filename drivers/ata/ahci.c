@@ -2234,7 +2234,7 @@ static void ahci_remove_one(struct pci_dev *pdev)
 		}
 		//done!
 	}
-EXPORT_SYMBOL_GPL(bpcie_sata_phy_init);
+	EXPORT_SYMBOL_GPL(bpcie_sata_phy_init);
 #endif
 
 module_pci_driver(ahci_pci_driver);

@@ -2437,7 +2437,7 @@ static int sdhci_pci_probe(struct pci_dev *pdev,
 
 	for (i = 0; i < slots; i++) {
 		#ifdef CONFIG_X86_PS4
-		slot = sdhci_pci_probe_slot(pdev, chip, chip->first_bar, i);
+			slot = sdhci_pci_probe_slot(pdev, chip, chip->first_bar, i);
 		#else
 		slot = sdhci_pci_probe_slot(pdev, chip, first_bar, i);
 		#endif
