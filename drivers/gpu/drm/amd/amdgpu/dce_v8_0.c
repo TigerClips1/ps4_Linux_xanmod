@@ -403,8 +403,8 @@ static int dce_v8_0_get_num_crtc(struct amdgpu_device *adev)
 	switch (adev->asic_type) {
 	case CHIP_BONAIRE:
 	case CHIP_HAWAII:
-	case CHIP_GLADIUS:
 	case CHIP_LIVERPOOL:
+	case CHIP_GLADIUS:
 		num_crtc = 6;
 		break;
 	case CHIP_KAVERI:
@@ -1100,10 +1100,9 @@ static void dce_v8_0_bandwidth_update(struct amdgpu_device *adev)
 	struct drm_display_mode *mode = NULL;
 	u32 num_heads = 0, lb_size;
 	int i;
-	
+
 	if((adev->asic_type == CHIP_LIVERPOOL) ||
 	   (adev->asic_type == CHIP_GLADIUS)) {
-		// FIXME PS4 (ps4patches): this stuff is broken
 		return;
 	}
 
@@ -1409,7 +1408,6 @@ static int dce_v8_0_audio_init(struct amdgpu_device *adev)
 		adev->mode_info.audio.num_pins = 7;
 	else if ((adev->asic_type == CHIP_KABINI) ||
 		 (adev->asic_type == CHIP_MULLINS)) /* KB/ML: 2 streams, 3 endpoints */
-		 /*  Liverpool and Gladius use 3 streams so that is fine here */
 		adev->mode_info.audio.num_pins = 3;
 	else if ((adev->asic_type == CHIP_BONAIRE) ||
 		 (adev->asic_type == CHIP_HAWAII))/* BN/HW: 6 streams, 7 endpoints */
@@ -1433,6 +1431,7 @@ static int dce_v8_0_audio_init(struct amdgpu_device *adev)
 			dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], true);
 		else
 			dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+	}
 
 	return 0;
 }
@@ -2009,9 +2008,7 @@ static int dce_v8_0_crtc_do_set_base(struct drm_crtc *crtc,
 	/* Bytes per pixel may have changed */
 	if ((adev->asic_type != CHIP_LIVERPOOL) &&
 	    (adev->asic_type != CHIP_GLADIUS))
-			dce_v8_0_bandwidth_update(adev);
-
-
+		dce_v8_0_bandwidth_update(adev);
 
 	return 0;
 }
@@ -2794,7 +2791,6 @@ static int dce_v8_0_hw_init(void *handle)
 	dce_v8_0_hpd_init(adev);
 
 	for (i = 0; i < adev->mode_info.audio.num_pins; i++) {
-		// Maybe that is still needed
 		if (adev->asic_type == CHIP_LIVERPOOL || adev->asic_type == CHIP_GLADIUS)
 			dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], true);
 		else
