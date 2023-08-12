@@ -1103,7 +1103,6 @@ static void cik_init_golden_registers(struct amdgpu_device *adev)
 							ARRAY_SIZE(hawaii_golden_spm_registers));
 		break;
 	case CHIP_LIVERPOOL:
-		// TODO (ps4patches): Why is this in comments?
 		/*amdgpu_device_program_register_sequence(adev,
 						 liverpool_mgcg_cgcg_init,
 						 ARRAY_SIZE(liverpool_mgcg_cgcg_init));*/
@@ -1113,7 +1112,6 @@ static void cik_init_golden_registers(struct amdgpu_device *adev)
 		amdgpu_device_program_register_sequence(adev,
 						 liverpool_golden_common_registers,
 						 ARRAY_SIZE(liverpool_golden_common_registers));
-		// TODO (ps4patches): no spm registers, try the bonaire ones?
 		break;
 	case CHIP_GLADIUS:
 		amdgpu_device_program_register_sequence(adev,
@@ -1125,7 +1123,6 @@ static void cik_init_golden_registers(struct amdgpu_device *adev)
 		amdgpu_device_program_register_sequence(adev,
 						 gladius_golden_common_registers,
 						 ARRAY_SIZE(gladius_golden_common_registers));
-		// TODO (ps4patches): Why is this using the Hawaii golden spm registers, that seems wrong?
 		amdgpu_device_program_register_sequence(adev,
 						 hawaii_golden_spm_registers,
 						 ARRAY_SIZE(hawaii_golden_spm_registers));
@@ -2377,63 +2374,63 @@ static int cik_common_early_init(void *handle)
 		} else
 			adev->external_rev_id = adev->rev_id + 0xa1;
 		break;
-		case CHIP_LIVERPOOL:
-			adev->cg_flags =
-				AMD_CG_SUPPORT_GFX_MGCG |
-				AMD_CG_SUPPORT_GFX_MGLS |
-				/*AMD_CG_SUPPORT_GFX_CGCG |*/
-				AMD_CG_SUPPORT_GFX_CGLS |
-				AMD_CG_SUPPORT_GFX_CGTS |
-				AMD_CG_SUPPORT_GFX_CGTS_LS |
-				AMD_CG_SUPPORT_GFX_CP_LS |
-				AMD_CG_SUPPORT_SDMA_MGCG |
-				AMD_CG_SUPPORT_SDMA_LS |
-				AMD_CG_SUPPORT_BIF_LS |
-				AMD_CG_SUPPORT_VCE_MGCG |
-				AMD_CG_SUPPORT_UVD_MGCG |
-				AMD_CG_SUPPORT_HDP_LS |
-				AMD_CG_SUPPORT_HDP_MGCG;
-			adev->pg_flags =
-				/*AMD_PG_SUPPORT_GFX_PG |
-				  AMD_PG_SUPPORT_GFX_SMG | */
-				/*AMD_PG_SUPPORT_UVD | */
-				/*AMD_PG_SUPPORT_VCE |
-				  AMD_PG_SUPPORT_CP |
-				  AMD_PG_SUPPORT_GDS |
-				  AMD_PG_SUPPORT_RLC_SMU_HS |
-				  AMD_PG_SUPPORT_SAMU |*/
-				0;
-			adev->external_rev_id = adev->rev_id + 0x71;
-			break;
+	case CHIP_LIVERPOOL:
+		adev->cg_flags =
+			AMD_CG_SUPPORT_GFX_MGCG |
+			AMD_CG_SUPPORT_GFX_MGLS |
+			/*AMD_CG_SUPPORT_GFX_CGCG |*/
+			AMD_CG_SUPPORT_GFX_CGLS |
+			AMD_CG_SUPPORT_GFX_CGTS |
+			AMD_CG_SUPPORT_GFX_CGTS_LS |
+			AMD_CG_SUPPORT_GFX_CP_LS |
+			AMD_CG_SUPPORT_SDMA_MGCG |
+			AMD_CG_SUPPORT_SDMA_LS |
+			AMD_CG_SUPPORT_BIF_LS |
+			AMD_CG_SUPPORT_VCE_MGCG |
+			AMD_CG_SUPPORT_UVD_MGCG |
+			AMD_CG_SUPPORT_HDP_LS |
+			AMD_CG_SUPPORT_HDP_MGCG;
+		adev->pg_flags =
+			/*AMD_PG_SUPPORT_GFX_PG |
+				AMD_PG_SUPPORT_GFX_SMG | */
+			/*AMD_PG_SUPPORT_UVD | */
+			/*AMD_PG_SUPPORT_VCE |
+				AMD_PG_SUPPORT_CP |
+				AMD_PG_SUPPORT_GDS |
+				AMD_PG_SUPPORT_RLC_SMU_HS |
+				AMD_PG_SUPPORT_SAMU |*/
+			0;
+		adev->external_rev_id = adev->rev_id + 0x71;
+		break;
 
-		case CHIP_GLADIUS:
-			adev->cg_flags =
-				AMD_CG_SUPPORT_GFX_MGCG |
-				AMD_CG_SUPPORT_GFX_MGLS |
-				AMD_CG_SUPPORT_GFX_CGCG |
-				AMD_CG_SUPPORT_GFX_CGLS |
-				AMD_CG_SUPPORT_GFX_CGTS |
-				AMD_CG_SUPPORT_GFX_CGTS_LS |
-				AMD_CG_SUPPORT_GFX_CP_LS |
-				AMD_CG_SUPPORT_SDMA_MGCG |
-				AMD_CG_SUPPORT_SDMA_LS |
-				AMD_CG_SUPPORT_BIF_LS |
-				AMD_CG_SUPPORT_VCE_MGCG |
-				AMD_CG_SUPPORT_UVD_MGCG |
-				AMD_CG_SUPPORT_HDP_LS |
-				AMD_CG_SUPPORT_HDP_MGCG;
-			adev->pg_flags =
-				/*AMD_PG_SUPPORT_GFX_PG |
-					AMD_PG_SUPPORT_GFX_SMG | */
-				/*AMD_PG_SUPPORT_UVD | */
-				/*AMD_PG_SUPPORT_VCE |
-					AMD_PG_SUPPORT_CP |
-					AMD_PG_SUPPORT_GDS |
-					AMD_PG_SUPPORT_RLC_SMU_HS |
-					AMD_PG_SUPPORT_SAMU |*/
-				0;
-			adev->external_rev_id = adev->rev_id + 0x71;
-			break;
+	case CHIP_GLADIUS:
+		adev->cg_flags =
+			AMD_CG_SUPPORT_GFX_MGCG |
+			AMD_CG_SUPPORT_GFX_MGLS |
+			AMD_CG_SUPPORT_GFX_CGCG |
+			AMD_CG_SUPPORT_GFX_CGLS |
+			AMD_CG_SUPPORT_GFX_CGTS |
+			AMD_CG_SUPPORT_GFX_CGTS_LS |
+			AMD_CG_SUPPORT_GFX_CP_LS |
+			AMD_CG_SUPPORT_SDMA_MGCG |
+			AMD_CG_SUPPORT_SDMA_LS |
+			AMD_CG_SUPPORT_BIF_LS |
+			AMD_CG_SUPPORT_VCE_MGCG |
+			AMD_CG_SUPPORT_UVD_MGCG |
+			AMD_CG_SUPPORT_HDP_LS |
+			AMD_CG_SUPPORT_HDP_MGCG;
+		adev->pg_flags =
+			/*AMD_PG_SUPPORT_GFX_PG |
+				AMD_PG_SUPPORT_GFX_SMG | */
+			/*AMD_PG_SUPPORT_UVD | */
+			/*AMD_PG_SUPPORT_VCE |
+				AMD_PG_SUPPORT_CP |
+				AMD_PG_SUPPORT_GDS |
+				AMD_PG_SUPPORT_RLC_SMU_HS |
+				AMD_PG_SUPPORT_SAMU |*/
+			0;
+		adev->external_rev_id = adev->rev_id + 0x71;
+		break;
 	default:
 		/* FIXME: not supported yet */
 		return -EINVAL;

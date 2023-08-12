@@ -307,7 +307,8 @@ static void deallocate_vmid(struct device_queue_manager *dqm,
 				struct queue *q)
 {
 	/* On GFX v7, CP doesn't flush TC at dequeue */
-	if ((q->device->device_info->asic_family == CHIP_HAWAII) || (q->device->device_info->asic_family == CHIP_LIVERPOOL))
+	if ((q->device->device_info->asic_family == CHIP_HAWAII) ||
+	    (q->device->device_info->asic_family == CHIP_LIVERPOOL))
 		if (flush_texture_cache_nocpsch(q->device, qpd))
 			pr_err("Failed to flush TC\n");
 

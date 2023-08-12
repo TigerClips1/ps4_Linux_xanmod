@@ -1954,6 +1954,7 @@ radeon_add_atom_connector(struct drm_device *dev,
 	radeon_connector = kzalloc(sizeof(struct radeon_connector), GFP_KERNEL);
 	if (!radeon_connector)
 		return;
+	
 	/* Liverpool (PS4) has an DP bridge which needs a special driver, and
  	 * a fake HDMI port that doesn't really exist. */
 	if (rdev->family == CHIP_LIVERPOOL) {
@@ -2025,20 +2026,19 @@ radeon_add_atom_connector(struct drm_device *dev,
 		case DRM_MODE_CONNECTOR_HDMIA:
 		case DRM_MODE_CONNECTOR_HDMIB:
 		case DRM_MODE_CONNECTOR_DisplayPort:
-				if (is_ps4_bridge) {
-					drm_connector_init(dev, &radeon_connector->base,
-						  	 &radeon_dp_connector_funcs, connector_type);
-					drm_connector_helper_add(&radeon_connector->base,
-							 	&radeon_dp_connector_helper_funcs);
-				} else {
-					drm_connector_init_with_ddc(dev, &radeon_connector->base,
-							    	&radeon_dp_connector_funcs,
-							    	connector_type,
-							    	ddc);
-					drm_connector_helper_add(&radeon_connector->base,
-							 	&radeon_dp_connector_helper_funcs);
-				}
-
+			if (is_ps4_bridge) {
+				drm_connector_init(dev, &radeon_connector->base,
+							&radeon_dp_connector_funcs, connector_type);
+				drm_connector_helper_add(&radeon_connector->base,
+							&radeon_dp_connector_helper_funcs);
+			} else {
+				drm_connector_init_with_ddc(dev, &radeon_connector->base,
+								&radeon_dp_connector_funcs,
+								connector_type,
+								ddc);
+				drm_connector_helper_add(&radeon_connector->base,
+							&radeon_dp_connector_helper_funcs);
+			}
 			drm_object_attach_property(&radeon_connector->base.base,
 						      rdev->mode_info.underscan_property,
 						      UNDERSCAN_OFF);

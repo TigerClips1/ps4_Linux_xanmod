@@ -451,7 +451,7 @@ int amdgpu_atombios_encoder_get_encoder_mode(struct drm_encoder *encoder)
 	/* dp bridges are always DP */
 	if ((amdgpu_encoder_get_dp_bridge_encoder_id(encoder) != ENCODER_OBJECT_ID_NONE) ||
 	    (adev->asic_type == CHIP_LIVERPOOL) || (adev->asic_type == CHIP_GLADIUS))
-		return ATOM_ENCODER_MODE_DP;
+			return ATOM_ENCODER_MODE_DP;
 
 	/* DVO is always DVO */
 	if ((amdgpu_encoder->encoder_id == ENCODER_OBJECT_ID_INTERNAL_DVO1) ||

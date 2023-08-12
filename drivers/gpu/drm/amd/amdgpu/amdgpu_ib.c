@@ -389,8 +389,8 @@ int amdgpu_ib_ring_tests(struct amdgpu_device *adev)
 	#else
 	for (i = 0; i < adev->num_rings; ++i) {
 	#endif
-			struct amdgpu_ring *ring = adev->rings[i];
-			long tmo;
+		struct amdgpu_ring *ring = adev->rings[i];
+		long tmo;
 
 		/* KIQ rings don't have an IB test because we never submit IBs
 		 * to them and they have no interrupt support.
