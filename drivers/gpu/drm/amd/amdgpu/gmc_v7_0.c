@@ -1070,7 +1070,7 @@ static int gmc_v7_0_sw_init(void *handle)
 	
 	dev_info(adev->dev, "Done gart\n");
 
-
+	
 	/*
 	 * number of VMs
 	 * VMID 0 is reserved for System

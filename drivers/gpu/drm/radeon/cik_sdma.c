@@ -709,6 +709,7 @@ int cik_sdma_ring_test(struct radeon_device *rdev,
 	} else {
 		DRM_ERROR("radeon: ring %d test failed (0x%08X)\n",
 			  ring->idx, tmp);
+		
 		if (rdev->family != CHIP_LIVERPOOL) {
 			r = -EINVAL;
 		}

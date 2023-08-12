@@ -1393,7 +1393,9 @@ static int gfx_v7_0_init_microcode(struct amdgpu_device *adev)
 	if (err)
 		goto out;
 
-	if ((adev->asic_type == CHIP_KAVERI) || (adev->asic_type == CHIP_LIVERPOOL) || (adev->asic_type == CHIP_GLADIUS)) {
+	if ((adev->asic_type == CHIP_KAVERI) ||
+	    (adev->asic_type == CHIP_LIVERPOOL) ||
+	    (adev->asic_type == CHIP_GLADIUS)) {
 		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mec2.bin", chip_name);
 		err = request_firmware(&adev->gfx.mec2_fw, fw_name, adev->dev);
 		if (err)
@@ -3339,7 +3341,9 @@ static int gfx_v7_0_cp_compute_load_microcode(struct amdgpu_device *adev)
 		WREG32(mmCP_MEC_ME1_UCODE_DATA, le32_to_cpup(fw_data++));
 	WREG32(mmCP_MEC_ME1_UCODE_ADDR, 0);
 
-	if ((adev->asic_type == CHIP_KAVERI) || (adev->asic_type == CHIP_LIVERPOOL) || (adev->asic_type == CHIP_GLADIUS)) {
+	if ((adev->asic_type == CHIP_KAVERI) ||
+	    (adev->asic_type == CHIP_LIVERPOOL) ||
+	    (adev->asic_type == CHIP_GLADIUS)) {
 		const struct gfx_firmware_header_v1_0 *mec2_hdr;
 
 		if (!adev->gfx.mec2_fw)
@@ -4910,6 +4914,40 @@ static void gfx_v7_0_gpu_early_init(struct amdgpu_device *adev)
 		adev->gfx.config.sc_earlyz_tile_fifo_size = 0x130;
 		gb_addr_config = BONAIRE_GB_ADDR_CONFIG_GOLDEN;
 		break;
+	case CHIP_HAWAII:
+		adev->gfx.config.max_shader_engines = 4;
+		adev->gfx.config.max_tile_pipes = 16;
+		adev->gfx.config.max_cu_per_sh = 11;
+		adev->gfx.config.max_sh_per_se = 1;
+		adev->gfx.config.max_backends_per_se = 4;
+		adev->gfx.config.max_texture_channel_caches = 16;
+		adev->gfx.config.max_gprs = 256;
+		adev->gfx.config.max_gs_threads = 32;
+		adev->gfx.config.max_hw_contexts = 8;
+
+		adev->gfx.config.sc_prim_fifo_size_frontend = 0x20;
+		adev->gfx.config.sc_prim_fifo_size_backend = 0x100;
+		adev->gfx.config.sc_hiz_tile_fifo_size = 0x30;
+		adev->gfx.config.sc_earlyz_tile_fifo_size = 0x130;
+		gb_addr_config = HAWAII_GB_ADDR_CONFIG_GOLDEN;
+		break;
+	case CHIP_KAVERI:
+		adev->gfx.config.max_shader_engines = 1;
+		adev->gfx.config.max_tile_pipes = 4;
+		adev->gfx.config.max_cu_per_sh = 8;
+		adev->gfx.config.max_backends_per_se = 2;
+		adev->gfx.config.max_sh_per_se = 1;
+		adev->gfx.config.max_texture_channel_caches = 4;
+		adev->gfx.config.max_gprs = 256;
+		adev->gfx.config.max_gs_threads = 16;
+		adev->gfx.config.max_hw_contexts = 8;
+
+		adev->gfx.config.sc_prim_fifo_size_frontend = 0x20;
+		adev->gfx.config.sc_prim_fifo_size_backend = 0x100;
+		adev->gfx.config.sc_hiz_tile_fifo_size = 0x30;
+		adev->gfx.config.sc_earlyz_tile_fifo_size = 0x130;
+		gb_addr_config = BONAIRE_GB_ADDR_CONFIG_GOLDEN;
+		break;
 	case CHIP_LIVERPOOL:
 		adev->gfx.config.max_shader_engines = 2; // Verified
 		adev->gfx.config.max_tile_pipes = 8; // Verified
@@ -4944,40 +4982,6 @@ static void gfx_v7_0_gpu_early_init(struct amdgpu_device *adev)
 		adev->gfx.config.sc_hiz_tile_fifo_size = 0x30;
 		adev->gfx.config.sc_earlyz_tile_fifo_size = 0x130;
 		gb_addr_config = 0x10000000; //0x22011003; //0x12011003;
-		break;
-	case CHIP_HAWAII:
-		adev->gfx.config.max_shader_engines = 4;
-		adev->gfx.config.max_tile_pipes = 16;
-		adev->gfx.config.max_cu_per_sh = 11;
-		adev->gfx.config.max_sh_per_se = 1;
-		adev->gfx.config.max_backends_per_se = 4;
-		adev->gfx.config.max_texture_channel_caches = 16;
-		adev->gfx.config.max_gprs = 256;
-		adev->gfx.config.max_gs_threads = 32;
-		adev->gfx.config.max_hw_contexts = 8;
-
-		adev->gfx.config.sc_prim_fifo_size_frontend = 0x20;
-		adev->gfx.config.sc_prim_fifo_size_backend = 0x100;
-		adev->gfx.config.sc_hiz_tile_fifo_size = 0x30;
-		adev->gfx.config.sc_earlyz_tile_fifo_size = 0x130;
-		gb_addr_config = HAWAII_GB_ADDR_CONFIG_GOLDEN;
-		break;
-	case CHIP_KAVERI:
-		adev->gfx.config.max_shader_engines = 1;
-		adev->gfx.config.max_tile_pipes = 4;
-		adev->gfx.config.max_cu_per_sh = 8;
-		adev->gfx.config.max_backends_per_se = 2;
-		adev->gfx.config.max_sh_per_se = 1;
-		adev->gfx.config.max_texture_channel_caches = 4;
-		adev->gfx.config.max_gprs = 256;
-		adev->gfx.config.max_gs_threads = 16;
-		adev->gfx.config.max_hw_contexts = 8;
-
-		adev->gfx.config.sc_prim_fifo_size_frontend = 0x20;
-		adev->gfx.config.sc_prim_fifo_size_backend = 0x100;
-		adev->gfx.config.sc_hiz_tile_fifo_size = 0x30;
-		adev->gfx.config.sc_earlyz_tile_fifo_size = 0x130;
-		gb_addr_config = BONAIRE_GB_ADDR_CONFIG_GOLDEN;
 		break;
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
@@ -5817,7 +5821,9 @@ static void gfx_v7_0_get_cu_info(struct amdgpu_device *adev)
 	unsigned disable_masks[4 * 2];
 	u32 ao_cu_num;
 
-	if ((adev->flags & AMD_IS_APU) && (adev->asic_type != CHIP_LIVERPOOL) && (adev->asic_type != CHIP_GLADIUS))
+	if ((adev->flags & AMD_IS_APU) &&
+	    (adev->asic_type != CHIP_LIVERPOOL) &&
+	    (adev->asic_type != CHIP_GLADIUS))
 		ao_cu_num = 2;
 	else
 		ao_cu_num = adev->gfx.config.max_cu_per_sh;

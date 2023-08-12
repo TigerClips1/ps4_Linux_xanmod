@@ -1038,7 +1038,6 @@ static const u32 kalindi_rlc_save_restore_register_list[] =
 	(0x0e00 << 16) | (0x9600 >> 2),
 };
 
-
 static const u32 bonaire_golden_spm_registers[] =
 {
 	0x30800, 0xe0ffffff, 0xe0000000
@@ -2631,17 +2630,6 @@ static int cik_init_microcode(struct radeon_device *rdev)
 		sdma_req_size = CIK_SDMA_UCODE_SIZE * 4;
 		num_fw = 6;
 		break;
-	case CHIP_LIVERPOOL:
-		chip_name = "LIVERPOOL";
-		new_chip_name = "liverpool";
-		pfp_req_size = LIVERPOOL_PFP_UCODE_SIZE * 4;
-		me_req_size = LIVERPOOL_ME_UCODE_SIZE * 4;
-		ce_req_size = CIK_CE_UCODE_SIZE * 4;
-		mec_req_size = CIK_MEC_UCODE_SIZE * 4;
-		rlc_req_size = LIVERPOOL_RLC_UCODE_SIZE * 4;
-		sdma_req_size = CIK_SDMA_UCODE_SIZE * 4;
-		num_fw = 6;
-		break;
 	case CHIP_MULLINS:
 		chip_name = "MULLINS";
 		new_chip_name = "mullins";
@@ -2650,6 +2638,17 @@ static int cik_init_microcode(struct radeon_device *rdev)
 		ce_req_size = CIK_CE_UCODE_SIZE * 4;
 		mec_req_size = CIK_MEC_UCODE_SIZE * 4;
 		rlc_req_size = ML_RLC_UCODE_SIZE * 4;
+		sdma_req_size = CIK_SDMA_UCODE_SIZE * 4;
+		num_fw = 6;
+		break;
+	case CHIP_LIVERPOOL:
+		chip_name = "LIVERPOOL";
+		new_chip_name = "liverpool";
+		pfp_req_size = LIVERPOOL_PFP_UCODE_SIZE * 4;
+		me_req_size = LIVERPOOL_ME_UCODE_SIZE * 4;
+		ce_req_size = CIK_CE_UCODE_SIZE * 4;
+		mec_req_size = CIK_MEC_UCODE_SIZE * 4;
+		rlc_req_size = LIVERPOOL_RLC_UCODE_SIZE * 4;
 		sdma_req_size = CIK_SDMA_UCODE_SIZE * 4;
 		num_fw = 6;
 		break;
@@ -3798,26 +3797,6 @@ static void cik_gpu_init(struct radeon_device *rdev)
 		rdev->config.cik.sc_earlyz_tile_fifo_size = 0x130;
 		gb_addr_config = BONAIRE_GB_ADDR_CONFIG_GOLDEN;
 		break;
-	
-	case CHIP_LIVERPOOL:
-		rdev->config.cik.max_shader_engines = 2; // VERIFIED
-		rdev->config.cik.max_tile_pipes = 8; // VERIFIED
-		rdev->config.cik.max_cu_per_sh = 9; // VERIFIED
-		rdev->config.cik.max_sh_per_se = 1; // VERIFIED
-		rdev->config.cik.max_backends_per_se = 2; // PROBABLY OK, >1?
-		rdev->config.cik.max_texture_channel_caches = 4; // ??
-		rdev->config.cik.max_gprs = 256;
-		rdev->config.cik.max_gs_threads = 32; // ??
-		rdev->config.cik.max_hw_contexts = 8;
-
-		rdev->config.cik.sc_prim_fifo_size_frontend = 0x20;
-		rdev->config.cik.sc_prim_fifo_size_backend = 0x100;
-		rdev->config.cik.sc_hiz_tile_fifo_size = 0x30;
-		rdev->config.cik.sc_earlyz_tile_fifo_size = 0x130;
-
-		gb_addr_config = HAWAII_GB_ADDR_CONFIG_GOLDEN;
-		break;
-
 	case CHIP_HAWAII:
 		rdev->config.cik.max_shader_engines = 4;
 		rdev->config.cik.max_tile_pipes = 16;
@@ -3851,6 +3830,25 @@ static void cik_gpu_init(struct radeon_device *rdev)
 		rdev->config.cik.sc_hiz_tile_fifo_size = 0x30;
 		rdev->config.cik.sc_earlyz_tile_fifo_size = 0x130;
 		gb_addr_config = BONAIRE_GB_ADDR_CONFIG_GOLDEN;
+		break;
+	
+	case CHIP_LIVERPOOL:
+		rdev->config.cik.max_shader_engines = 2; // VERIFIED
+		rdev->config.cik.max_tile_pipes = 8; // VERIFIED
+		rdev->config.cik.max_cu_per_sh = 9; // VERIFIED
+		rdev->config.cik.max_sh_per_se = 1; // VERIFIED
+		rdev->config.cik.max_backends_per_se = 2; // PROBABLY OK, >1?
+		rdev->config.cik.max_texture_channel_caches = 4; // ??
+		rdev->config.cik.max_gprs = 256;
+		rdev->config.cik.max_gs_threads = 32; // ??
+		rdev->config.cik.max_hw_contexts = 8;
+
+		rdev->config.cik.sc_prim_fifo_size_frontend = 0x20;
+		rdev->config.cik.sc_prim_fifo_size_backend = 0x100;
+		rdev->config.cik.sc_hiz_tile_fifo_size = 0x30;
+		rdev->config.cik.sc_earlyz_tile_fifo_size = 0x130;
+
+		gb_addr_config = HAWAII_GB_ADDR_CONFIG_GOLDEN;
 		break;
 	case CHIP_KABINI:
 	case CHIP_MULLINS:

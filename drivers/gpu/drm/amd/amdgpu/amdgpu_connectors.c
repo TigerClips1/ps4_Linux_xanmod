@@ -1517,28 +1517,28 @@ static const struct drm_connector_funcs amdgpu_connector_dp_funcs = {
 };
 
 #ifdef CONFIG_X86_PS4
-	int ps4_bridge_get_modes(struct drm_connector *connector);
-	int ps4_bridge_mode_valid(struct drm_connector *connector,
-				struct drm_display_mode *mode);
-	enum drm_connector_status ps4_bridge_detect(struct drm_connector *connector,
-					  bool force);
+int ps4_bridge_get_modes(struct drm_connector *connector);
+int ps4_bridge_mode_valid(struct drm_connector *connector,
+			struct drm_display_mode *mode);
+enum drm_connector_status ps4_bridge_detect(struct drm_connector *connector,
+					bool force);
 
 
-	static const struct drm_connector_helper_funcs amdgpu_ps4_dp_connector_helper_funcs = {
-		.get_modes = ps4_bridge_get_modes,
-		.mode_valid = ps4_bridge_mode_valid,
-		.best_encoder = amdgpu_connector_dvi_encoder,
-	};
+static const struct drm_connector_helper_funcs amdgpu_ps4_dp_connector_helper_funcs = {
+	.get_modes = ps4_bridge_get_modes,
+	.mode_valid = ps4_bridge_mode_valid,
+	.best_encoder = amdgpu_connector_dvi_encoder,
+};
 
-	static const struct drm_connector_funcs amdgpu_ps4_dp_connector_funcs = {
-		.dpms = drm_helper_connector_dpms,
-		.detect = ps4_bridge_detect,
-		.fill_modes = drm_helper_probe_single_connector_modes,
-		//.set_property = amdgpu_connector_set_property,
-		.destroy = amdgpu_connector_destroy,
-		.force = amdgpu_connector_dvi_force,
-		.late_register = amdgpu_connector_late_register,
-	};
+static const struct drm_connector_funcs amdgpu_ps4_dp_connector_funcs = {
+	.dpms = drm_helper_connector_dpms,
+	.detect = ps4_bridge_detect,
+	.fill_modes = drm_helper_probe_single_connector_modes,
+	//.set_property = amdgpu_connector_set_property,
+	.destroy = amdgpu_connector_destroy,
+	.force = amdgpu_connector_dvi_force,
+	.late_register = amdgpu_connector_late_register,
+};
 #endif
 
 static const struct drm_connector_funcs amdgpu_connector_edp_funcs = {

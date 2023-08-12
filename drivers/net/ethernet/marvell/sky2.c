@@ -3243,21 +3243,21 @@ static void sky2_reset(struct sky2_hw *hw)
 	u32 hwe_mask = Y2_HWE_ALL_MASK;
 
 	#ifdef CONFIG_X86_PS4
-		if (pdev->vendor == PCI_VENDOR_ID_SONY &&
-	    	pdev->device == PCI_DEVICE_ID_SONY_AEOLIA_GBE) {
-			u32 val1, val2;
+	if (pdev->vendor == PCI_VENDOR_ID_SONY &&
+		pdev->device == PCI_DEVICE_ID_SONY_AEOLIA_GBE) {
+		u32 val1, val2;
 
-			sky2_write32(hw, 0x60, 0x32100);
-			sky2_write32(hw, 0x64, 6);
-			sky2_write32(hw, 0x68, 0x63b9c);
-			sky2_write32(hw, 0x6c, 0x300);
-			val1 = sky2_read32(hw, 0x158);
-			val2 = sky2_read32(hw, 0x160);
-			val1 &= ~0x33333333;
-			val2 &= ~0xCC00000;
-			sky2_write32(hw, 0x158, val1);
-			sky2_write32(hw, 0x160, val2);
-		}
+		sky2_write32(hw, 0x60, 0x32100);
+		sky2_write32(hw, 0x64, 6);
+		sky2_write32(hw, 0x68, 0x63b9c);
+		sky2_write32(hw, 0x6c, 0x300);
+		val1 = sky2_read32(hw, 0x158);
+		val2 = sky2_read32(hw, 0x160);
+		val1 &= ~0x33333333;
+		val2 &= ~0xCC00000;
+		sky2_write32(hw, 0x158, val1);
+		sky2_write32(hw, 0x160, val2);
+	}
 	#endif
 
 	/* disable ASF */
@@ -3325,10 +3325,10 @@ static void sky2_reset(struct sky2_hw *hw)
 	}
 
 	#ifdef CONFIG_X86_PS4
-		if (pdev->vendor == PCI_VENDOR_ID_SONY &&
-	    	pdev->device == PCI_DEVICE_ID_SONY_AEOLIA_GBE) {
-			; /* Do not perform phy resets on aeolia, it will hang */
-		} else
+	if (pdev->vendor == PCI_VENDOR_ID_SONY &&
+		pdev->device == PCI_DEVICE_ID_SONY_AEOLIA_GBE) {
+		; /* Do not perform phy resets on aeolia, it will hang */
+	} else
 	#endif
 
 	if (hw->chip_id == CHIP_ID_YUKON_OPT ||
@@ -4760,41 +4760,41 @@ static const struct net_device_ops sky2_netdev_ops[2] = {
 };
 
 #ifdef CONFIG_X86_PS4
-	/* NOTE: This region is no longer referenced by current ps4 x86 code. */
-	/* However it still contains the mac address. */
-	static void aeolia_get_mac_address(struct sky2_hw *hw, unsigned char *addr) {
-		u8 default_addr[ETH_ALEN] = { 0x52, 0x54, 0x00, 0xf0, 0xff, 0x0f };
-		unsigned int mem_devfn = PCI_DEVFN(PCI_SLOT(hw->pdev->devfn), AEOLIA_FUNC_ID_MEM);
-		struct pci_dev *mem_dev;
-		phys_addr_t bp_base;
-		void __iomem *bp;
+/* NOTE: This region is no longer referenced by current ps4 x86 code. */
+/* However it still contains the mac address. */
+static void aeolia_get_mac_address(struct sky2_hw *hw, unsigned char *addr) {
+	u8 default_addr[ETH_ALEN] = { 0x52, 0x54, 0x00, 0xf0, 0xff, 0x0f };
+	unsigned int mem_devfn = PCI_DEVFN(PCI_SLOT(hw->pdev->devfn), AEOLIA_FUNC_ID_MEM);
+	struct pci_dev *mem_dev;
+	phys_addr_t bp_base;
+	void __iomem *bp;
 
-		memcpy(addr, default_addr, sizeof(default_addr));
+	memcpy(addr, default_addr, sizeof(default_addr));
 
-		mem_dev = pci_get_slot(hw->pdev->bus, mem_devfn);
-		if (!mem_dev) {
-			dev_err(&hw->pdev->dev, "sky2: could not get handle to mem device\n");
-			return;
-		}
-
-		bp_base = pci_resource_start(mem_dev, 5) + APCIE_SPM_BP_BASE;
-		if (!request_mem_region(bp_base, APCIE_SPM_BP_SIZE, "spm.bp")) {
-			dev_err(&hw->pdev->dev, "sky2: failed to request bootparam SPM region\n");
-			return;
-		}
-
-		bp = ioremap(bp_base, APCIE_SPM_BP_SIZE);
-		if (!bp) {
-			dev_err(&hw->pdev->dev, "sky2: failed to map bootparam portion of SPM\n");
-			goto release_bp;
-		}
-
-		memcpy_fromio(addr, bp, ETH_ALEN);
-
-		iounmap(bp);
-	release_bp:
-		release_mem_region(bp_base, APCIE_SPM_BP_SIZE);
+	mem_dev = pci_get_slot(hw->pdev->bus, mem_devfn);
+	if (!mem_dev) {
+		dev_err(&hw->pdev->dev, "sky2: could not get handle to mem device\n");
+		return;
 	}
+
+	bp_base = pci_resource_start(mem_dev, 5) + APCIE_SPM_BP_BASE;
+	if (!request_mem_region(bp_base, APCIE_SPM_BP_SIZE, "spm.bp")) {
+		dev_err(&hw->pdev->dev, "sky2: failed to request bootparam SPM region\n");
+		return;
+	}
+
+	bp = ioremap(bp_base, APCIE_SPM_BP_SIZE);
+	if (!bp) {
+		dev_err(&hw->pdev->dev, "sky2: failed to map bootparam portion of SPM\n");
+		goto release_bp;
+	}
+
+	memcpy_fromio(addr, bp, ETH_ALEN);
+
+	iounmap(bp);
+release_bp:
+	release_mem_region(bp_base, APCIE_SPM_BP_SIZE);
+}
 #endif
 
 /* Initialize network device */
@@ -4870,9 +4870,9 @@ static struct net_device *sky2_init_netdev(struct sky2_hw *hw, unsigned port,
 		dev->max_mtu = ETH_JUMBO_MTU;
 	
 	#ifdef CONFIG_X86_PS4
-		if (hw->pdev->vendor == PCI_VENDOR_ID_SONY) {
-			aeolia_get_mac_address(hw, dev->dev_addr);
-		} else
+	if (hw->pdev->vendor == PCI_VENDOR_ID_SONY) {
+		aeolia_get_mac_address(hw, dev->dev_addr);
+	} else
 	#endif
 	{
 		/* try to get mac address in the following order:
@@ -5037,9 +5037,9 @@ static int sky2_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	char buf1[16];
 
 	#ifdef CONFIG_X86_PS4
-		/* This will return negative on non-PS4 platforms */
-		if (apcie_status() == 0)
-			return -EPROBE_DEFER;
+	/* This will return negative on non-PS4 platforms */
+	if (apcie_status() == 0)
+		return -EPROBE_DEFER;
 	#endif
 
 	err = pci_enable_device(pdev);
@@ -5074,13 +5074,13 @@ static int sky2_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	pci_set_master(pdev);
 
 	#ifdef CONFIG_X86_PS4
-		if (pdev->vendor == PCI_VENDOR_ID_SONY) {
-			if (pci_set_dma_mask(pdev, DMA_BIT_MASK(31)) < 0 ||
-		    	pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(31)) < 0) {
-				dev_err(&pdev->dev, "no usable DMA configuration\n");
-				goto err_out_free_regions;
-			}
-		} else
+	if (pdev->vendor == PCI_VENDOR_ID_SONY) {
+		if (pci_set_dma_mask(pdev, DMA_BIT_MASK(31)) < 0 ||
+			pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(31)) < 0) {
+			dev_err(&pdev->dev, "no usable DMA configuration\n");
+			goto err_out_free_regions;
+		}
+	} else
 	#endif
 
 	if (sizeof(dma_addr_t) > sizeof(u32) &&
@@ -5133,12 +5133,12 @@ static int sky2_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	hw->phy_addr = PHY_ADDR_MARV;
 	#ifdef CONFIG_X86_PS4
-		if (pdev->vendor == PCI_VENDOR_ID_SONY &&
-	    	pdev->device == PCI_DEVICE_ID_SONY_AEOLIA_GBE) {
-			/* aeolia supports some sort of "l2 switch" */
-			/* it has normal phy at addr 1 with a possibly-active switch at addr 2 */
-			hw->phy_addr = 1;
-		}
+	if (pdev->vendor == PCI_VENDOR_ID_SONY &&
+		pdev->device == PCI_DEVICE_ID_SONY_AEOLIA_GBE) {
+		/* aeolia supports some sort of "l2 switch" */
+		/* it has normal phy at addr 1 with a possibly-active switch at addr 2 */
+		hw->phy_addr = 1;
+	}
 	#endif
 
 	err = sky2_init(hw);
@@ -5170,16 +5170,16 @@ static int sky2_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		disable_msi = !!dmi_check_system(msi_blacklist);
 	
 	#ifdef CONFIG_X86_PS4
-		if (pdev->vendor == PCI_VENDOR_ID_SONY &&
-	    	apcie_assign_irqs(pdev, 1) > 0) {
-			err = sky2_test_msi(hw);
-			if (err) {
-				apcie_free_irqs(pdev->irq, 1);
-				/* PS4 requires MSI, so if it fails, bail out. */
-				goto err_out_free_netdev;
-			}
-			hw->flags |= SKY2_HW_USE_AEOLIA_MSI;
-		} else
+	if (pdev->vendor == PCI_VENDOR_ID_SONY &&
+		apcie_assign_irqs(pdev, 1) > 0) {
+		err = sky2_test_msi(hw);
+		if (err) {
+			apcie_free_irqs(pdev->irq, 1);
+			/* PS4 requires MSI, so if it fails, bail out. */
+			goto err_out_free_netdev;
+		}
+		hw->flags |= SKY2_HW_USE_AEOLIA_MSI;
+	} else
 	#endif
 
 	if (!disable_msi && pci_enable_msi(pdev) == 0) {
@@ -5239,12 +5239,13 @@ err_out_unregister:
 	unregister_netdev(dev);
 err_out_free_netdev:
 	#ifdef CONFIG_X86_PS4
-		if (hw->flags & SKY2_HW_USE_AEOLIA_MSI)
-			apcie_free_irqs(pdev->irq, 1);
-		else
+	if (hw->flags & SKY2_HW_USE_AEOLIA_MSI)
+		apcie_free_irqs(pdev->irq, 1);
+	else
 	#endif
 		if (hw->flags & SKY2_HW_USE_MSI)
 			pci_disable_msi(pdev);
+
 	free_netdev(dev);
 err_out_free_pci:
 	dma_free_coherent(&pdev->dev,
@@ -5292,9 +5293,9 @@ static void sky2_remove(struct pci_dev *pdev)
 	}
 
 	#ifdef CONFIG_X86_PS4
-		if (hw->flags & SKY2_HW_USE_AEOLIA_MSI)
-			apcie_free_irqs(pdev->irq, 1);
-		else
+	if (hw->flags & SKY2_HW_USE_AEOLIA_MSI)
+		apcie_free_irqs(pdev->irq, 1);
+	else
 	#endif
 
 	if (hw->flags & SKY2_HW_USE_MSI)

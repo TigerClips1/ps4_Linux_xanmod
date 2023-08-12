@@ -1101,8 +1101,9 @@ static void dce_v8_0_bandwidth_update(struct amdgpu_device *adev)
 	u32 num_heads = 0, lb_size;
 	int i;
 	
-	if((adev->asic_type == CHIP_LIVERPOOL) || (adev->asic_type == CHIP_GLADIUS)) {
-		// FIXME PS4: this stuff is broken
+	if((adev->asic_type == CHIP_LIVERPOOL) ||
+	   (adev->asic_type == CHIP_GLADIUS)) {
+		// FIXME PS4 (ps4patches): this stuff is broken
 		return;
 	}
 
@@ -1432,7 +1433,6 @@ static int dce_v8_0_audio_init(struct amdgpu_device *adev)
 			dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], true);
 		else
 			dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
-	}
 
 	return 0;
 }
@@ -2007,8 +2007,11 @@ static int dce_v8_0_crtc_do_set_base(struct drm_crtc *crtc,
 	}
 
 	/* Bytes per pixel may have changed */
-	if ((adev->asic_type != CHIP_LIVERPOOL) && (adev->asic_type != CHIP_GLADIUS))
-		dce_v8_0_bandwidth_update(adev);
+	if ((adev->asic_type != CHIP_LIVERPOOL) &&
+	    (adev->asic_type != CHIP_GLADIUS))
+			dce_v8_0_bandwidth_update(adev);
+
+
 
 	return 0;
 }

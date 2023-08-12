@@ -324,51 +324,51 @@ static const struct sdhci_pci_fixes sdhci_intel_qrk = {
 };
 
 #ifdef CONFIG_X86_PS4
-	static int aeolia_probe(struct sdhci_pci_chip *chip)
-	{
-		chip->num_slots = 1;
-		chip->first_bar = 0;
-		if (apcie_status() == 0)
-			return -EPROBE_DEFER;
+static int aeolia_probe(struct sdhci_pci_chip *chip)
+{
+	chip->num_slots = 1;
+	chip->first_bar = 0;
+	if (apcie_status() == 0)
+		return -EPROBE_DEFER;
 
-		chip->pdev->class &= ~0x0000FF;
-		chip->pdev->class |= PCI_SDHCI_IFDMA;
-		return 0;
+	chip->pdev->class &= ~0x0000FF;
+	chip->pdev->class |= PCI_SDHCI_IFDMA;
+	return 0;
+}
+
+static int aeolia_probe_slot(struct sdhci_pci_slot *slot)
+{
+	int err = apcie_assign_irqs(slot->chip->pdev, 1);
+	if (err <= 0) {
+		dev_err(&slot->chip->pdev->dev, "failed to get IRQ: %d\n", err);
+		return -ENODEV;
 	}
+	slot->host->irq = slot->chip->pdev->irq;
+	return 0;
+}
 
-	static int aeolia_probe_slot(struct sdhci_pci_slot *slot)
-	{
-		int err = apcie_assign_irqs(slot->chip->pdev, 1);
-		if (err <= 0) {
-			dev_err(&slot->chip->pdev->dev, "failed to get IRQ: %d\n", err);
-			return -ENODEV;
-		}
-		slot->host->irq = slot->chip->pdev->irq;
-		return 0;
+static void aeolia_remove_slot(struct sdhci_pci_slot *slot, int dead)
+{
+	apcie_free_irqs(slot->chip->pdev->irq, 1);
+}
+
+static int aeolia_enable_dma(struct sdhci_pci_slot *slot)
+{
+	if (pci_set_dma_mask(slot->chip->pdev, DMA_BIT_MASK(31))) {
+		return -EINVAL;
 	}
-
-	static void aeolia_remove_slot(struct sdhci_pci_slot *slot, int dead)
-	{
-		apcie_free_irqs(slot->chip->pdev->irq, 1);
+	if (pci_set_consistent_dma_mask(slot->chip->pdev, DMA_BIT_MASK(31))) {
+		return -EINVAL;
 	}
+	return 0;
+}
 
-	static int aeolia_enable_dma(struct sdhci_pci_slot *slot)
-	{
-		if (pci_set_dma_mask(slot->chip->pdev, DMA_BIT_MASK(31))) {
-			return -EINVAL;
-		}
-		if (pci_set_consistent_dma_mask(slot->chip->pdev, DMA_BIT_MASK(31))) {
-			return -EINVAL;
-		}
-		return 0;
-	}
-
-	static const struct sdhci_pci_fixes sdhci_aeolia = {
-		.probe		= aeolia_probe,
-		.probe_slot	= aeolia_probe_slot,
-		.remove_slot	= aeolia_remove_slot,
-		.enable_dma	= aeolia_enable_dma,
-	};
+static const struct sdhci_pci_fixes sdhci_aeolia = {
+	.probe		= aeolia_probe,
+	.probe_slot	= aeolia_probe_slot,
+	.remove_slot	= aeolia_remove_slot,
+	.enable_dma	= aeolia_enable_dma,
+};
 #endif
 
 static int mrst_hc_probe_slot(struct sdhci_pci_slot *slot)
@@ -2027,8 +2027,8 @@ static const struct pci_device_id pci_ids[] = {
 	SDHCI_PCI_DEVICE(ARASAN, PHY_EMMC, arasan),
 	SDHCI_PCI_DEVICE(SYNOPSYS, DWC_MSHC, snps),
 	#ifdef CONFIG_X86_PS4
-		SDHCI_PCI_DEVICE(SONY, AEOLIA_SDHCI, aeolia),
-		SDHCI_PCI_DEVICE(SONY, BELIZE_SDHCI, aeolia),
+	SDHCI_PCI_DEVICE(SONY, AEOLIA_SDHCI, aeolia),
+	SDHCI_PCI_DEVICE(SONY, BELIZE_SDHCI, aeolia),
 	#endif
 	SDHCI_PCI_DEVICE(GLI, 9750, gl9750),
 	SDHCI_PCI_DEVICE(GLI, 9755, gl9755),
@@ -2437,7 +2437,7 @@ static int sdhci_pci_probe(struct pci_dev *pdev,
 
 	for (i = 0; i < slots; i++) {
 		#ifdef CONFIG_X86_PS4
-			slot = sdhci_pci_probe_slot(pdev, chip, chip->first_bar, i);
+		slot = sdhci_pci_probe_slot(pdev, chip, chip->first_bar, i);
 		#else
 		slot = sdhci_pci_probe_slot(pdev, chip, first_bar, i);
 		#endif

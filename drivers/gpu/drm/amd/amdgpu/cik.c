@@ -2377,7 +2377,7 @@ static int cik_common_early_init(void *handle)
 		} else
 			adev->external_rev_id = adev->rev_id + 0xa1;
 		break;
-	case CHIP_LIVERPOOL:
+		case CHIP_LIVERPOOL:
 			adev->cg_flags =
 				AMD_CG_SUPPORT_GFX_MGCG |
 				AMD_CG_SUPPORT_GFX_MGLS |
@@ -2560,55 +2560,6 @@ int cik_set_ip_blocks(struct amdgpu_device *adev)
 		amdgpu_device_ip_block_add(adev, &uvd_v4_2_ip_block);
 		amdgpu_device_ip_block_add(adev, &vce_v2_0_ip_block);
 		break;
-	case CHIP_LIVERPOOL:
-		amdgpu_device_ip_block_add(adev, &cik_common_ip_block);
-		amdgpu_device_ip_block_add(adev, &gmc_v7_0_ip_block);
-		amdgpu_device_ip_block_add(adev, &cik_ih_ip_block);
-		//amdgpu_device_ip_block_add(adev, &pp_smu_ip_block);
-		if (adev->enable_virtual_display)
-			amdgpu_device_ip_block_add(adev, &amdgpu_vkms_ip_block);
-#if defined(CONFIG_DRM_AMD_DC)
-		else if (amdgpu_device_has_dc_support(adev))
-			amdgpu_device_ip_block_add(adev, &dm_ip_block);
-#endif
-		else
-			amdgpu_device_ip_block_add(adev, &dce_v8_1_ip_block);
-		amdgpu_device_ip_block_add(adev, &gfx_v7_1_ip_block);
-		amdgpu_device_ip_block_add(adev, &cik_sdma_ip_block);
-		/*amdgpu_device_ip_block_add(adev, &uvd_v4_2_ip_block)*/;
-		/*amdgpu_device_ip_block_add(adev, &vce_v2_0_ip_block)*/;
-		break;
-	case CHIP_GLADIUS:
-		amdgpu_device_ip_block_add(adev, &cik_common_ip_block);
-		amdgpu_device_ip_block_add(adev, &gmc_v7_0_ip_block);
-		amdgpu_device_ip_block_add(adev, &cik_ih_ip_block);
-		//amdgpu_device_ip_block_add(adev, &pp_smu_ip_block);
-		if (adev->enable_virtual_display)
-			amdgpu_device_ip_block_add(adev, &amdgpu_vkms_ip_block);
-#if defined(CONFIG_DRM_AMD_DC)
-		else if (amdgpu_device_has_dc_support(adev))
-			amdgpu_device_ip_block_add(adev, &dm_ip_block);
-#endif
-		else
-		amdgpu_device_ip_block_add(adev, &dce_v8_1_ip_block);
-		amdgpu_device_ip_block_add(adev, &gfx_v7_1_ip_block);
-		amdgpu_device_ip_block_add(adev, &cik_sdma_ip_block);
-		/*amdgpu_device_ip_block_add(adev, &uvd_v4_2_ip_block)*/;
-		/*amdgpu_device_ip_block_add(adev, &vce_v2_0_ip_block)*/;
-		break;
-	case CHIP_HAWAII:
-		amdgpu_device_ip_block_add(adev, &cik_common_ip_block);
-		amdgpu_device_ip_block_add(adev, &gmc_v7_0_ip_block);
-		amdgpu_device_ip_block_add(adev, &cik_ih_ip_block);
-		amdgpu_device_ip_block_add(adev, &gfx_v7_3_ip_block);
-		amdgpu_device_ip_block_add(adev, &cik_sdma_ip_block);
-		amdgpu_device_ip_block_add(adev, &pp_smu_ip_block);
-		if (adev->enable_virtual_display)
-			amdgpu_device_ip_block_add(adev, &amdgpu_vkms_ip_block);
-#if defined(CONFIG_DRM_AMD_DC)
-		else if (amdgpu_device_has_dc_support(adev))
-			amdgpu_device_ip_block_add(adev, &dm_ip_block);
-#endif
 		else
 			amdgpu_device_ip_block_add(adev, &dce_v8_5_ip_block);
 		amdgpu_device_ip_block_add(adev, &uvd_v4_2_ip_block);
@@ -2651,6 +2602,42 @@ int cik_set_ip_blocks(struct amdgpu_device *adev)
 			amdgpu_device_ip_block_add(adev, &dce_v8_3_ip_block);
 		amdgpu_device_ip_block_add(adev, &uvd_v4_2_ip_block);
 		amdgpu_device_ip_block_add(adev, &vce_v2_0_ip_block);
+		break;
+	case CHIP_LIVERPOOL:
+		amdgpu_device_ip_block_add(adev, &cik_common_ip_block);
+		amdgpu_device_ip_block_add(adev, &gmc_v7_0_ip_block);
+		amdgpu_device_ip_block_add(adev, &cik_ih_ip_block);
+		//amdgpu_device_ip_block_add(adev, &pp_smu_ip_block);
+		if (adev->enable_virtual_display)
+			amdgpu_device_ip_block_add(adev, &amdgpu_vkms_ip_block);
+#if defined(CONFIG_DRM_AMD_DC)
+		else if (amdgpu_device_has_dc_support(adev))
+			amdgpu_device_ip_block_add(adev, &dm_ip_block);
+#endif
+		else
+			amdgpu_device_ip_block_add(adev, &dce_v8_1_ip_block);
+		amdgpu_device_ip_block_add(adev, &gfx_v7_1_ip_block);
+		amdgpu_device_ip_block_add(adev, &cik_sdma_ip_block);
+		/*amdgpu_device_ip_block_add(adev, &uvd_v4_2_ip_block)*/;
+		/*amdgpu_device_ip_block_add(adev, &vce_v2_0_ip_block)*/;
+		break;
+	case CHIP_GLADIUS:
+		amdgpu_device_ip_block_add(adev, &cik_common_ip_block);
+		amdgpu_device_ip_block_add(adev, &gmc_v7_0_ip_block);
+		amdgpu_device_ip_block_add(adev, &cik_ih_ip_block);
+		//amdgpu_device_ip_block_add(adev, &pp_smu_ip_block);
+		if (adev->enable_virtual_display)
+			amdgpu_device_ip_block_add(adev, &amdgpu_vkms_ip_block);
+#if defined(CONFIG_DRM_AMD_DC)
+		else if (amdgpu_device_has_dc_support(adev))
+			amdgpu_device_ip_block_add(adev, &dm_ip_block);
+#endif
+		else
+		amdgpu_device_ip_block_add(adev, &dce_v8_1_ip_block);
+		amdgpu_device_ip_block_add(adev, &gfx_v7_1_ip_block);
+		amdgpu_device_ip_block_add(adev, &cik_sdma_ip_block);
+		/*amdgpu_device_ip_block_add(adev, &uvd_v4_2_ip_block)*/;
+		/*amdgpu_device_ip_block_add(adev, &vce_v2_0_ip_block)*/;
 		break;
 	default:
 		/* FIXME: not supported yet */

@@ -2638,7 +2638,9 @@ int radeon_asic_init(struct radeon_device *rdev)
 			kv_asic.copy.blit = &cik_copy_cpdma;
 			kv_asic.copy.blit_ring_index = R600_RING_TYPE_DMA_INDEX;
 		}
+
 		rdev->asic = &kv_asic;
+		
 		/* set num crtcs */
 		if (rdev->family == CHIP_KAVERI) {
 			rdev->num_crtc = 4;

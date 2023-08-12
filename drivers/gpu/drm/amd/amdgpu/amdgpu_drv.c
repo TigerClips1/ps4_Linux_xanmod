@@ -2077,13 +2077,13 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
 	is_fw_fb = amdgpu_is_fw_framebuffer(base, size);
 
 	#ifdef CONFIG_X86_PS4
-		/* On the PS4 (Liverpool graphics) we have a hard dependency on the
-	 	* Aeolia driver to set up the HDMI encoder which is connected to it,
-	 	* so defer probe until it is ready. This test passes if this isn't
-	 	* a PS4 (returns -ENODEV).
-	 	*/
-		if (apcie_status() == 0)
-			return -EPROBE_DEFER;
+	/* On the PS4 (Liverpool graphics) we have a hard dependency on the
+	* Aeolia driver to set up the HDMI encoder which is connected to it,
+	* so defer probe until it is ready. This test passes if this isn't
+	* a PS4 (returns -ENODEV).
+	*/
+	if (apcie_status() == 0)
+		return -EPROBE_DEFER;
 	#endif
 
 	adev = devm_drm_dev_alloc(&pdev->dev, &amdgpu_kms_driver, typeof(*adev), ddev);
