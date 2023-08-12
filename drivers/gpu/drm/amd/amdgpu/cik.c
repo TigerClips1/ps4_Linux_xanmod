@@ -2538,7 +2538,7 @@ static const struct amdgpu_ip_block_version cik_common_ip_block =
 	.rev = 0,
 	.funcs = &cik_common_ip_funcs,
 };
-
+// fix anther comepile error
 int cik_set_ip_blocks(struct amdgpu_device *adev)
 {
 	switch (adev->asic_type) {
