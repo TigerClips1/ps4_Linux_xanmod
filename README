@@ -1,6 +1,21 @@
 Linux kernel
 ============
 
+how to comepile both belize and aeolia that easy
+first for ubuntu install this  sudo apt-get install git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison  or for fedora distro sudo dnf install gcc git flex make bison openssl-devel elfutils-libelf-devel   
+and arch is easy sudo pacman -S base-devel bc flex python
+
+affter that then run this git clone https://github.com/TigerClips1/ps4_Linux_xanmod.git 
+and for aeolio do this click the Aeolia  Brench in my github and click code and download as a zip 
+
+and for you to extract it you need to run  unzip ps4_Linux_xanmod-Aeolia.zip aftter that then do this 
+
+cd ps4_Linux_xanmod or for aeolia cd  ps4_Linux_xanmod-Aeolia
+
+then mv config .config
+
+and finally run make -j8
+
 There are several guides for kernel developers and users. These guides can
 be rendered in a number of formats, like HTML and PDF. Please read
 Documentation/admin-guide/README.rst first.
