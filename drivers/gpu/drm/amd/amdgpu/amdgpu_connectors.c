@@ -1687,21 +1687,20 @@ amdgpu_connector_add(struct amdgpu_device *adev,
 		case DRM_MODE_CONNECTOR_HDMIA:
 		case DRM_MODE_CONNECTOR_HDMIB:
 		case DRM_MODE_CONNECTOR_DisplayPort:
-			if(!is_ps4_bridge) {
-				drm_connector_init_with_ddc(dev, &amdgpu_connector->base,
-						    &amdgpu_connector_dp_funcs,
-						    connector_type,
-						    ddc);
-			drm_connector_helper_add(&amdgpu_connector->base,
-				drm_connector_helper_add(&amdgpu_connector->base,
-						 &amdgpu_connector_dp_helper_funcs);
-			} else {
-				drm_connector_init(dev, &amdgpu_connector->base, 
-						&amdgpu_ps4_dp_connector_funcs, 
-						connector_type);
+				if(!is_ps4_bridge) {
+					drm_connector_init_with_ddc(dev, &amdgpu_connector->base,
+						    		&amdgpu_connector_dp_funcs,
+						    		connector_type,
+						   		 	ddc);
+					drm_connector_helper_add(&amdgpu_connector->base,
+								 &amdgpu_connector_dp_helper_funcs);
+				} else {
+					drm_connector_init(dev, &amdgpu_connector->base, 
+							  	  &amdgpu_ps4_dp_connector_funcs, 
+							  	  connector_type);
 
-				drm_connector_helper_add(&amdgpu_connector->base,
-						&amdgpu_ps4_dp_connector_helper_funcs);
+					drm_connector_helper_add(&amdgpu_connector->base,
+									&amdgpu_ps4_dp_connector_helper_funcs);
 			}
 			drm_object_attach_property(&amdgpu_connector->base.base,
 						      adev->mode_info.underscan_property,
