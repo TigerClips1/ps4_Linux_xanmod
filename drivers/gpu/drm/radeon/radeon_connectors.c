@@ -2028,18 +2028,18 @@ radeon_add_atom_connector(struct drm_device *dev,
 		case DRM_MODE_CONNECTOR_DisplayPort:
 			if (is_ps4_bridge) {
 				drm_connector_init(dev, &radeon_connector->base,
-							   &radeon_dp_connector_funcs, connector_type);
+						   &radeon_dp_connector_funcs, connector_type);
 				drm_connector_helper_add(&radeon_connector->base,
-							&radeon_dp_connector_helper_funcs);
+							 &radeon_dp_connector_helper_funcs);
 			} else {
 				drm_connector_init_with_ddc(dev, &radeon_connector->base,
-								    &radeon_dp_connector_funcs
-									connector_type,
-									ddc);
+							    &radeon_dp_connector_funcs,
+							    connector_type,
+							    ddc);
 				drm_connector_helper_add(&radeon_connector->base,
 							 &radeon_dp_connector_helper_funcs);
 			}
-
+			
 			drm_object_attach_property(&radeon_connector->base.base,
 						      rdev->mode_info.underscan_property,
 						      UNDERSCAN_OFF);
