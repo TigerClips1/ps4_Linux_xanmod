@@ -1692,6 +1692,7 @@ amdgpu_connector_add(struct amdgpu_device *adev,
 						    &amdgpu_connector_dp_funcs,
 						    connector_type,
 						    ddc);
+			drm_connector_helper_add(&amdgpu_connector->base,
 				drm_connector_helper_add(&amdgpu_connector->base,
 						 &amdgpu_connector_dp_helper_funcs);
 			} else {

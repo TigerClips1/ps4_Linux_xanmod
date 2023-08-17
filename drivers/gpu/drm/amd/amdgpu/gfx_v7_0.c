@@ -1661,7 +1661,7 @@ static void gfx_v7_0_tiling_mode_table_init(struct amdgpu_device *adev)
 			if (reg_offset != 7)
 				WREG32(mmGB_MACROTILE_MODE0 + reg_offset, macrotile[reg_offset]);
 		break;
-	
+	//fixed order
 	case CHIP_LIVERPOOL:
 	case CHIP_GLADIUS:
 		tile[0] = (ARRAY_MODE(ARRAY_2D_TILED_THIN1) |

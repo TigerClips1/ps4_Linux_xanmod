@@ -3850,6 +3850,7 @@ static void cik_gpu_init(struct radeon_device *rdev)
 
 		gb_addr_config = HAWAII_GB_ADDR_CONFIG_GOLDEN;
 		break;
+
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
 	default:
@@ -5560,6 +5561,7 @@ static void cik_gpu_soft_reset(struct radeon_device *rdev, u32 reset_mask)
 		 RREG32(VM_CONTEXT1_PROTECTION_FAULT_ADDR));
 	dev_info(rdev->dev, "  VM_CONTEXT1_PROTECTION_FAULT_STATUS 0x%08X\n",
 		 RREG32(VM_CONTEXT1_PROTECTION_FAULT_STATUS));
+	
 	dev_info(rdev->dev, "  VM_CONTEXT0_CNTL 0x%08X\n",
 		 RREG32(VM_CONTEXT0_CNTL));
 	dev_info(rdev->dev, "  VM_CONTEXT1_CNTL 0x%08X\n",
