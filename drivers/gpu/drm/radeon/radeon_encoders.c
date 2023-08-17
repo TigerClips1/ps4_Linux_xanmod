@@ -197,10 +197,10 @@ static void radeon_encoder_add_backlight(struct radeon_encoder *radeon_encoder,
 
 #ifdef CONFIG_X86_PS4
 int radeon_ps4_bridge_register(struct drm_connector *connector,
-					struct drm_encoder *encoder);
+       							       struct drm_encoder *encoder);
 
 static void radeon_maybe_add_bridge(struct drm_connector *connector,
-					struct drm_encoder *encoder)
+									    struct drm_encoder *encoder)
 {
 	struct drm_device *dev = connector->dev;
 	struct radeon_device *rdev = dev->dev_private;
@@ -210,6 +210,7 @@ static void radeon_maybe_add_bridge(struct drm_connector *connector,
 	}
 }
 #endif
+
 
 void
 radeon_link_encoder_connector(struct drm_device *dev)
