@@ -17,7 +17,7 @@ then mv config .config
 and finally run make -j8
 
 for kernel modules run the fellowing command below
-mv  conifg_Modules .config
+mv  config_Modules .config
 make -j8 modules
 sudo make modules_install 
 
