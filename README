@@ -14,16 +14,7 @@ cd ps4_Linux_xanmod or for aeolia cd  ps4_Linux_xanmod-Aeolia
 
 then mv config .config
 
-and finally run make -j8
-
-for kernel modules run the fellowing command below
-mv  config_Modules .config
-make -j8 modules
-sudo make modules_install 
-
-discalmer make sure you boot in ps4 linux before runing the commands to it will work 
-PS make sure its my kernel or there will be isuse this have to do for now until i make all .ko file in a .rpm/.deb etc
-
+aand finally run make -j8
 
 There are several guides for kernel developers and users. These guides can
 be rendered in a number of formats, like HTML and PDF. Please read
